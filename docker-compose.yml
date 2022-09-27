@@ -1,0 +1,15 @@
+version: "3.5"
+services:
+  app:
+    container_name: ${APP_SERVICE:-larvel_app}
+    restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - ${APP_PORT:-8092}:8080
+    working_dir: /var/www/html
+    privileged: true
+    volumes:
+      - ${APP_PATH:-./src}:/var/www/html
+      # - ./.docker/logs/nginx:/var/log/nginx

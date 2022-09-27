@@ -1,4 +1,4 @@
-FROM alpine:3.15
+FROM alpine:3.16
 
 # Setup document root
 WORKDIR /var/www/html
@@ -9,42 +9,42 @@ RUN apk add \
   nano wget zip unzip curl sqlite nodejs npm yarn \
   curl \
   nginx \
-  php7 \
-  php7-pear \
-  php7-ctype \
-  php7-curl \
-  php7-dom \
-  php7-fpm \
-  php7-gd \
-  php7-intl \
-  php7-mbstring \
-  php7-pdo \
-  php7-pdo_mysql \
-  php7-mysqli \
-  # php7-opcache \
-  php7-openssl \
-  php7-phar \
-  php7-session \
-  php7-xml \
-  php7-xmlreader \
-  php7-fileinfo \
-  php7-zip \
-  php7-gmp \
-  php7-redis \
-  # php7-pecl-imagick \
+  php81 \
+  php81-pear \
+  php81-ctype \
+  php81-curl \
+  php81-dom \
+  php81-fpm \
+  php81-gd \
+  php81-intl \
+  php81-mbstring \
+  php81-pdo \
+  php81-pdo_mysql \
+  php81-mysqli \
+  # php81-opcache \
+  php81-openssl \
+  php81-phar \
+  php81-session \
+  php81-xml \
+  php81-xmlreader \
+  php81-fileinfo \
+  php81-zip \
+  php81-gmp \
+  php81-redis \
+  # php81-pecl-imagick \
   composer \
   supervisor
 
 # Create symlink so programs depending on `php` still function
-# RUN ln -s /usr/bin/php7 /usr/bin/php
+# RUN ln -s /usr/bin/php81 /usr/bin/php
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
 ADD config/sites/*.conf /etc/nginx/conf.d/
 
 # Configure PHP-FPM
-COPY config/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
-COPY config/php.ini /etc/php7/conf.d/custom.ini
+COPY config/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
+COPY config/php.ini /etc/php81/conf.d/custom.ini
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf

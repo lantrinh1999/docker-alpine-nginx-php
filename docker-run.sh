@@ -15,5 +15,6 @@ fi
 export APP_SERVICE=${APP_SERVICE:-larvel_app}
 
 # docker exec -it $APP_SERVICE $@
+# --user=root
 
-docker exec -it --user=root $APP_SERVICE /bin/sh
+docker exec -it $APP_SERVICE //bin/sh

@@ -1,13 +1,14 @@
 #!/bin/bash
 
 export ENV_SRC=" "
-if [ -f ./src/.env ]; then
-    source ./src/.env
-    export ENV_SRC=" --env-file ./src/.env "
+
+if [ -f ./.env ]; then
+    source ./.env
+    export ENV_SRC=" --env-file ./.env "
 else
-    if [ -f ./.env ]; then
-        source ./.env
-        export ENV_SRC=" --env-file ./.env "
+    if [ -f ./src/.env ]; then
+        source ./src/.env
+        export ENV_SRC=" --env-file ./src/.env "
     fi
 fi
 

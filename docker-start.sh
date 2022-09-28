@@ -9,7 +9,6 @@ else
     if [ -f ./src/.env ]; then
         source ./src/.env
         export ENV_SRC=" --env-file ./src/.env "
-
     fi
 fi
 

@@ -10,16 +10,25 @@ RUN apk add \
   curl \
   nginx \
   php7 \
+  php7-fpm \
+  php7-tokenizer \
   php7-pear \
   php7-ctype \
+  php7-pcntl \
+  php7-iconv \
+  php7-posix \
+  php7-apcu \
+  php7-json \
+  php7-zlib \
   php7-curl \
   php7-dom \
-  php7-fpm \
   php7-gd \
   php7-intl \
   php7-mbstring \
   php7-pdo \
   php7-pdo_mysql \
+  php7-pgsql \
+  php7-pdo_pgsql \
   php7-mysqli \
   # php7-opcache \
   php7-openssl \
@@ -27,6 +36,8 @@ RUN apk add \
   php7-session \
   php7-xml \
   php7-xmlreader \
+  php7-xmlwriter \
+  php7-simplexml \
   php7-fileinfo \
   php7-zip \
   php7-gmp \
@@ -36,7 +47,8 @@ RUN apk add \
   supervisor
 
 # Create symlink so programs depending on `php` still function
-# RUN ln -s /usr/bin/php7 /usr/bin/php
+RUN rm -rf /usr/bin/php
+RUN ln -s /usr/bin/php7 /usr/bin/php
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf

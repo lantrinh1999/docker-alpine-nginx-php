@@ -5,7 +5,7 @@ WORKDIR /var/www/html
 
 # Install packages and remove default server definition
 RUN apk add \
-  # --no-cache \
+  --no-cache \
   nano wget zip unzip curl sqlite nodejs npm yarn \
   curl \
   nginx \

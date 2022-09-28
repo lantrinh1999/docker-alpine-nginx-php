@@ -6,20 +6,29 @@ WORKDIR /var/www/html
 # Install packages and remove default server definition
 RUN apk add \
   # --no-cache \
-  nano wget zip unzip curl sqlite nodejs npm yarn \
+  nano make wget zip unzip curl sqlite nodejs npm yarn \
   curl \
   nginx \
   php8 \
+  php8-fpm \
+  php8-tokenizer \
   php8-pear \
   php8-ctype \
+  php8-pcntl \
+  php8-iconv \
+  php8-posix \
+  php8-apcu \
+  php8-json \
+  php8-zlib \
   php8-curl \
   php8-dom \
-  php8-fpm \
   php8-gd \
   php8-intl \
   php8-mbstring \
   php8-pdo \
   php8-pdo_mysql \
+  php8-pgsql \
+  php8-pdo_pgsql \
   php8-mysqli \
   # php8-opcache \
   php8-openssl \
@@ -27,6 +36,8 @@ RUN apk add \
   php8-session \
   php8-xml \
   php8-xmlreader \
+  php8-xmlwriter \
+  php8-simplexml \
   php8-fileinfo \
   php8-zip \
   php8-gmp \
@@ -36,7 +47,8 @@ RUN apk add \
   supervisor
 
 # Create symlink so programs depending on `php` still function
-# RUN ln -s /usr/bin/php8 /usr/bin/php
+RUN rm -rf /usr/bin/php
+RUN ln -s /usr/bin/php8 /usr/bin/php
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
@@ -51,12 +63,12 @@ COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
 RUN adduser -D -u 1000 -g 1000 -s /bin/sh www && \
-    mkdir -p /var/www/html && \
-    mkdir -p /var/cache/nginx && \
-    chown -R www:www /var/www/html && \
-    chown -R www:www /run && \
-    chown -R www:www /var/lib/nginx && \
-    chown -R www:www /var/log/nginx
+  mkdir -p /var/www/html && \
+  mkdir -p /var/cache/nginx && \
+  chown -R www:www /var/www/html && \
+  chown -R www:www /run && \
+  chown -R www:www /var/lib/nginx && \
+  chown -R www:www /var/log/nginx
 
 # Add application
 # COPY --chown=nobody src/ /var/www/html/

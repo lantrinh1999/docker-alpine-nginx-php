@@ -4,10 +4,10 @@ FROM alpine:3.16
 WORKDIR /var/www/html
 
 # Install packages and remove default server definition
-RUN apk add \
-  # --no-cache \
-  nano make wget zip unzip curl sqlite nodejs npm yarn \
-  curl \
+RUN apk update \
+  && apk add \
+  --no-cache \
+  nano make wget zip unzip curl sqlite nodejs npm \
   nginx \
   php81 \
   php81-fpm \
@@ -42,6 +42,8 @@ RUN apk add \
   php81-zip \
   php81-gmp \
   php81-redis \
+  php81-exif \
+  php81-mongodb \
   # php81-pecl-imagick \
   composer \
   supervisor
@@ -74,7 +76,7 @@ RUN adduser -D -u 1000 -g 1000 -s /bin/sh www && \
 # COPY --chown=nobody src/ /var/www/html/
 
 # Install Composer
-COPY  --from=composer/composer /usr/bin/composer /usr/bin/composer
+# COPY  --from=composer/composer /usr/bin/composer /usr/bin/composer
 
 # Run composer install to install the dependencies
 # RUN composer install --optimize-autoloader --no-interaction --no-progress

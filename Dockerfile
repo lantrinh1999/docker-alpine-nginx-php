@@ -4,10 +4,10 @@ FROM alpine:3.15
 WORKDIR /var/www/html
 
 # Install packages and remove default server definition
-RUN apk add \
-  # --no-cache \
-  nano make wget zip unzip curl sqlite nodejs npm yarn \
-  curl \
+RUN apk update \
+  && apk add \
+  -U --no-cache \
+  bash nano make wget zip unzip curl sqlite nodejs npm \
   nginx \
   php8 \
   php8-fpm \
@@ -42,13 +42,14 @@ RUN apk add \
   php8-zip \
   php8-gmp \
   php8-redis \
+  php8-exif \
+  php8-mongodb \
   # php8-pecl-imagick \
-  composer \
   supervisor
 
 # Create symlink so programs depending on `php` still function
-RUN rm -rf /usr/bin/php
-RUN ln -s /usr/bin/php8 /usr/bin/php
+RUN rm -rf /usr/bin/php 2>/dev/null
+RUN ln -s /usr/bin/php8 /usr/bin/php 2>/dev/null
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
@@ -65,16 +66,12 @@ COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN adduser -D -u 1000 -g 1000 -s /bin/sh www && \
   mkdir -p /var/www/html && \
   mkdir -p /var/cache/nginx && \
-  chown -R www:www /var/www/html && \
-  chown -R www:www /run && \
-  chown -R www:www /var/lib/nginx && \
-  chown -R www:www /var/log/nginx
+  chown -R www:www /var/www/html
 
 # Add application
 # COPY --chown=nobody src/ /var/www/html/
-
 # Install Composer
-COPY  --from=composer/composer /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 # Run composer install to install the dependencies
 # RUN composer install --optimize-autoloader --no-interaction --no-progress

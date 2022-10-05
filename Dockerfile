@@ -4,10 +4,10 @@ FROM alpine:3.15
 WORKDIR /var/www/html
 
 # Install packages and remove default server definition
-RUN apk add \
+RUN apk update \
+  && apk add \
   --no-cache \
-  nano wget zip unzip curl sqlite nodejs npm yarn \
-  curl \
+  nano make wget zip unzip curl sqlite nodejs npm \
   nginx \
   php7 \
   php7-fpm \
@@ -42,6 +42,8 @@ RUN apk add \
   php7-zip \
   php7-gmp \
   php7-redis \
+  php7-exif \
+  php7-mongodb \
   # php7-pecl-imagick \
   composer \
   supervisor
@@ -63,18 +65,18 @@ COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
 RUN adduser -D -u 1000 -g 1000 -s /bin/sh www && \
-    mkdir -p /var/www/html && \
-    mkdir -p /var/cache/nginx && \
-    chown -R www:www /var/www/html && \
-    chown -R www:www /run && \
-    chown -R www:www /var/lib/nginx && \
-    chown -R www:www /var/log/nginx
+  mkdir -p /var/www/html && \
+  mkdir -p /var/cache/nginx && \
+  chown -R www:www /var/www/html && \
+  chown -R www:www /run && \
+  chown -R www:www /var/lib/nginx && \
+  chown -R www:www /var/log/nginx
 
 # Add application
 # COPY --chown=nobody src/ /var/www/html/
 
 # Install Composer
-COPY  --from=composer/composer /usr/bin/composer /usr/bin/composer
+# COPY  --from=composer/composer /usr/bin/composer /usr/bin/composer
 
 # Run composer install to install the dependencies
 # RUN composer install --optimize-autoloader --no-interaction --no-progress
